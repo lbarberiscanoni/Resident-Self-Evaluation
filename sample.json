@@ -1,0 +1,36 @@
+{
+	"users": {
+		"asd": { 
+			"name": "lorenzo",
+			"password": "lol",
+			"attempts": {
+				"id": {
+					"questions": {
+						"qIDa": false, 
+						"qIDb": true
+					},
+					"score": 50,
+					"timestamp": 100
+				}
+			}
+		}
+	}, 
+	"questions": {
+		"qIDa": {
+			"content": false,
+			"question": "what is 2+2?",
+			"options": [
+				1, 2, 3, 4
+			],
+			"answer": 4
+		},
+		"qIDb": {
+			"content": false,
+			"question": "what is 2+3?",
+			"options": [
+				1, 5, 9, 4
+			],
+			"answer": 5
+		}
+	}
+}

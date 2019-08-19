@@ -5,37 +5,38 @@ import * as firebase from "firebase";
 
 // Initialize Firebase
 const config = {
-    apiKey: "AIzaSyCVj9ZWunoXIGOT08Qw8XF9qiS_TTnsP8A",
-    authDomain: "stanford-heart-surgery.firebaseapp.com",
-    databaseURL: "https://stanford-heart-surgery.firebaseio.com",
-    projectId: "stanford-heart-surgery",
-    storageBucket: "stanford-heart-surgery.appspot.com",
-    messagingSenderId: "856277829656"
+  apiKey: "AIzaSyDO4gQiWkeNAxllb-nXWDr74vemGMRQBbw",
+  authDomain: "georgetown-memorial.firebaseapp.com",
+  databaseURL: "https://georgetown-memorial.firebaseio.com",
+  projectId: "georgetown-memorial",
+  storageBucket: "georgetown-memorial.appspot.com",
+  messagingSenderId: "633749216180",
+  appId: "1:633749216180:web:e1f318a5a37df142"
 };
 firebase.initializeApp(config);
 
 export default class App extends React.Component {
+
   constructor() {
-        super();
-        let rootRef = firebase.database().ref();
-        this.itemsRef = rootRef;
-        this.state = {
-            location: "home",
-        };
-    }
+      super();
+      let rootRef = firebase.database().ref().child("eval");
+      this.itemsRef = rootRef;
+      this.state = {
+          location: "home",
+      };
+      this.listenForItems(this.itemsRef);
+
+  }
 
   listenForItems(itemsRef) {
-    itemsRef.once("value").then((snap) => {
+    itemsRef.once("value").then((snapshot) => {
+      console.log(Object.keys(snapshot.val()))
         // let navList = snap.val()[0]["Manual"]
 
         // this.setState({
         //     "table_of_contents": navList
         // });
     });
-  }
-
-  componentWillMount() {
-      this.listenForItems(this.itemsRef);
   }
 
   render() {
