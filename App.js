@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-
 import * as firebase from "firebase";
+import Question from "./Question";
+
 
 // Initialize Firebase
 const config = {
@@ -15,36 +16,64 @@ const config = {
 };
 firebase.initializeApp(config);
 
-export default class App extends React.Component {
+export default class App extends Component {
 
   constructor() {
       super();
       let rootRef = firebase.database().ref().child("eval");
       this.itemsRef = rootRef;
       this.state = {
-          location: "home",
+        size: 1,
+        username: "lorenzo",
+        userId: "asd",
+        location: "home",
       };
       this.listenForItems(this.itemsRef);
 
   }
 
   listenForItems(itemsRef) {
-    itemsRef.once("value").then((snapshot) => {
-      console.log(Object.keys(snapshot.val()))
-        // let navList = snap.val()[0]["Manual"]
-
-        // this.setState({
-        //     "table_of_contents": navList
-        // });
+    itemsRef.child("questions").once("value").then((snapshot) => {
+      this.setState({
+        "questions": snapshot.val()
+      })
     });
   }
 
+  generateForm() {
+    let allQuestions = []
+    if (this.state.questions) { 
+      Object.keys(this.state.questions).map((key) => {
+        allQuestions.push(<Question ob={ this.state.questions[key] } key={ key } />)
+      })
+    } else {
+      allQuestions = [<Text>Test</Text>]
+    }
+
+    console.log(allQuestions.length)
+
+    return allQuestions
+  }
+
+  componentDidMount() {
+    this.listenForItems(this.itemsRef);
+  }
+
   render() {
-    return(
-      <View style={styles.container}>
-      <Text>What is this?</Text>
-      </View>
-    );   
+    switch(this.state.location) {
+      case "login": 
+        return(
+          <View style={styles.container}>
+          <Text>Login</Text>
+          </View>
+        ); 
+      case "home": 
+        return(
+          <View style={styles.container}>
+            { this.generateForm() }
+          </View>
+        ); 
+    }  
   }
 
 }
@@ -54,6 +83,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
   },
 });
